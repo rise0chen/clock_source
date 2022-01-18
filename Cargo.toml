@@ -1,0 +1,13 @@
+[package]
+authors = ["rise0chen <rise0chen@163.com>"]
+description = "set a common clock source"
+edition = "2018"
+license-file = "LICENSE"
+name = "clock_source"
+readme = "./README.md"
+repository = "https://github.com/rise0chen/clock_source.git"
+version = "0.1.0"
+
+[features]
+default = ["std"]
+std = []
