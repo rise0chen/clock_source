@@ -4,7 +4,7 @@ use core::time::Duration;
 macro_rules! register_clock_source {
     ($path:path) => {
         #[no_mangle]
-        static __RUST_CLOCK_SOURCE__: fn() -> Duration = $path;
+        static __RUST_CLOCK_SOURCE__: fn() -> core::time::Duration = $path;
     };
 }
 extern "Rust" {
