@@ -1,14 +1,14 @@
-use core::time::Duration;
-
 #[macro_export]
 macro_rules! register_clock_source {
     ($path:path) => {
         #[no_mangle]
-        static __RUST_CLOCK_SOURCE__: fn() -> core::time::Duration = $path;
+        extern "C" fn __RUST_CRATE_CLOCK_SOURCE() -> u64 {
+            $path()
+        }
     };
 }
-extern "Rust" {
-    static __RUST_CLOCK_SOURCE__: fn() -> Duration;
+extern "C" {
+    fn __RUST_CRATE_CLOCK_SOURCE() -> u64;
 }
 
-pub const CLOCK: fn() -> Duration = || unsafe { __RUST_CLOCK_SOURCE__() };
+pub const CLOCK: fn() -> u64 = || unsafe { __RUST_CRATE_CLOCK_SOURCE() };

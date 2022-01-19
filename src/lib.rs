@@ -1,18 +1,18 @@
 #![no_std]
 
-#[cfg(not(feature = "std"))]
-mod custom;
-#[cfg(feature = "std")]
-mod std;
+cfg_if::cfg_if! {
+    if #[cfg(any(feature = "custom", not(feature = "std")))] {
+        mod custom;
+        use custom::CLOCK;
+    } else {
+        mod std;
+        use std::CLOCK;
+    }
+}
 
-use core::time::Duration;
-#[cfg(not(feature = "std"))]
-use custom::CLOCK;
-#[cfg(feature = "std")]
-use std::CLOCK;
+static CLOCK_SOURCE: fn() -> u64 = CLOCK;
 
-static CLOCK_SOURCE: fn() -> Duration = CLOCK;
-
-pub fn now() -> Duration {
+/// Nanosecond since `app start time` or `os start time`
+pub fn now() -> u64 {
     CLOCK_SOURCE()
 }

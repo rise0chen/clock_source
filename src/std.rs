@@ -1,7 +1,11 @@
 extern crate std;
-use std::time::{Duration, SystemTime, UNIX_EPOCH};
+use std::time::Instant;
 
-pub const CLOCK: fn() -> Duration = || {
-    let now = SystemTime::now();
-    now.duration_since(UNIX_EPOCH).expect("Time went backwards")
+static mut TIME: Option<Instant> = None;
+
+pub const CLOCK: fn() -> u64 = || unsafe {
+    if TIME.is_none() {
+        TIME = Some(Instant::now())
+    }
+    TIME.unwrap().elapsed().as_nanos() as u64
 };

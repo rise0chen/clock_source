@@ -10,18 +10,18 @@ clock_source = "*"
 ```
 
 ```rust
-let timestamp = clock_source::now().as_millis()
+let now: u64 = clock_source::now();
 ```
 
 ### custom clock source
 
 ```toml
 [dependencies]
-clock_source = { version = "*", default-features = false }
+clock_source = { version = "*", features = ["custom"] }
 ```
 
 ```rust
-static SOURCE: fn() -> Duration = || Duration::from_secs(1);
+static SOURCE: fn() -> u64 = || 1;
 clock_source::register_clock_source!(SOURCE);
-assert_eq!(clock_source::now(), Duration::from_secs(1));
+assert_eq!(clock_source::now(), 1);
 ```
