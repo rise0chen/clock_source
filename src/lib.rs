@@ -10,7 +10,7 @@ cfg_if::cfg_if! {
     }
 }
 
-static CLOCK_SOURCE: fn() -> u64 = CLOCK;
+pub static CLOCK_SOURCE: fn() -> u64 = CLOCK;
 
 /// Nanosecond since `app start time` or `os start time`
 pub fn now() -> u64 {
