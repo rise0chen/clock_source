@@ -1,17 +1,7 @@
-[package]
-authors = ["rise0chen <rise0chen@163.com>"]
-description = "set a common clock source"
-edition = "2018"
-license-file = "LICENSE"
-name = "clock_source"
-readme = "./README.md"
-repository = "https://github.com/rise0chen/clock_source.git"
-version = "0.2.1"
+[workspace]
+members = [
+  "clock_source",
+  "tick_clock",
+]
 
-[features]
-custom = []
-default = ["std"]
-std = []
-
-[dependencies]
-cfg-if = "1.0"
+[patch.crates-io]
