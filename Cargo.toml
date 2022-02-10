@@ -2,6 +2,7 @@
 members = [
   "clock_source",
   "tick_clock",
+  "async-tick",
 ]
 
 [patch.crates-io]
