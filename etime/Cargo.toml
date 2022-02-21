@@ -1,0 +1,12 @@
+[package]
+authors = ["rise0chen <rise0chen@163.com>"]
+description = "measure elapsed time"
+edition = "2018"
+license-file = "LICENSE"
+name = "etime"
+readme = "./README.md"
+repository = "https://github.com/rise0chen/etime.git"
+version = "0.1.8"
+
+[dependencies]
+clock_source = "0.2.1"

@@ -1,6 +1,7 @@
 [workspace]
 members = [
   "clock_source",
+  "etime",
   "tick_clock",
   "async-tick",
 ]
