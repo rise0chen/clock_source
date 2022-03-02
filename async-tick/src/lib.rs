@@ -1,4 +1,5 @@
-#![no_std]
+#![cfg_attr(not(feature = "std"), no_std)]
+#![cfg_attr(docsrs, feature(doc_cfg))]
 
 mod interval;
 mod sleep;
@@ -42,4 +43,20 @@ pub fn take_tick() -> Option<Tick> {
     } else {
         None
     }
+}
+
+#[cfg(feature = "std")]
+#[cfg_attr(docsrs, doc(cfg(feature = "std")))]
+pub fn auto_tick(interval: Duration) {
+    use std::thread;
+    use std::time::Instant;
+
+    let mut ticker = take_tick().unwrap();
+    let mut last = Instant::now();
+    thread::spawn(move || loop {
+        let now = Instant::now();
+        ticker.tick(now.saturating_duration_since(last));
+        last = now;
+        thread::sleep(interval);
+    });
 }
