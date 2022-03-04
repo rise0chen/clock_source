@@ -5,7 +5,7 @@ use core::pin::Pin;
 use core::task::{Context, Poll};
 use core::time::Duration;
 
-pub fn sleep(duration: Duration) -> Sleep<'static, WAITS_NUM> {
+pub fn sleep(duration: Duration) -> Sleep {
     let deadline = now() + duration.as_nanos() as u64;
     Sleep {
         pool: &WAITS,
@@ -13,7 +13,7 @@ pub fn sleep(duration: Duration) -> Sleep<'static, WAITS_NUM> {
         token: None,
     }
 }
-pub fn sleep_until(deadline: u64) -> Sleep<'static, WAITS_NUM> {
+pub fn sleep_until(deadline: u64) -> Sleep {
     Sleep {
         pool: &WAITS,
         deadline,
@@ -21,12 +21,12 @@ pub fn sleep_until(deadline: u64) -> Sleep<'static, WAITS_NUM> {
     }
 }
 
-pub struct Sleep<'a, const N: usize> {
-    pool: &'a WakerPool<u64, N>,
+pub struct Sleep {
+    pool: &'static WakerPool<u64, WAITS_NUM>,
     deadline: u64,
-    token: Option<WakerToken<'a, u64, N>>,
+    token: Option<WakerToken<'static, u64, WAITS_NUM>>,
 }
-impl<'a, const N: usize> Future for Sleep<'a, N> {
+impl Future for Sleep {
     type Output = ();
     fn poll(mut self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
         let deadline = self.deadline;

@@ -5,7 +5,7 @@ use core::task::{Context, Poll};
 use core::time::Duration;
 use futures_util::Stream;
 
-pub fn interval(period: Duration) -> Interval<'static, WAITS_NUM> {
+pub fn interval(period: Duration) -> Interval {
     Interval {
         pool: &WAITS,
         last: now(),
@@ -14,13 +14,13 @@ pub fn interval(period: Duration) -> Interval<'static, WAITS_NUM> {
     }
 }
 
-pub struct Interval<'a, const N: usize> {
-    pool: &'a WakerPool<u64, N>,
+pub struct Interval {
+    pool: &'static WakerPool<u64, WAITS_NUM>,
     last: u64,
     period: Duration,
-    token: Option<WakerToken<'a, u64, N>>,
+    token: Option<WakerToken<'static, u64, WAITS_NUM>>,
 }
-impl<'a, const N: usize> Stream for Interval<'a, N> {
+impl Stream for Interval {
     type Item = ();
     fn poll_next(mut self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Option<Self::Item>> {
         let next_time = self.last + self.period.as_nanos() as u64;
