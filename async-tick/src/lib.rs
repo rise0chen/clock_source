@@ -53,10 +53,13 @@ pub fn auto_tick(interval: Duration) {
 
     let mut ticker = take_tick().unwrap();
     let mut last = Instant::now();
-    thread::spawn(move || loop {
-        let now = Instant::now();
-        ticker.tick(now.saturating_duration_since(last));
-        last = now;
-        thread::sleep(interval);
-    });
+    thread::Builder::new()
+        .name("async-tick".into())
+        .spawn(move || loop {
+            let now = Instant::now();
+            ticker.tick(now.saturating_duration_since(last));
+            last = now;
+            thread::sleep(interval);
+        })
+        .unwrap();
 }
