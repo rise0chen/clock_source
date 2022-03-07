@@ -5,8 +5,7 @@ cfg_if::cfg_if! {
         mod custom;
         use custom::CLOCK;
     } else {
-        mod std;
-        use std::CLOCK;
+        use time_clock::clock as CLOCK;
     }
 }
 
