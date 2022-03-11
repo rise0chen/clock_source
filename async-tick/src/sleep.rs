@@ -1,5 +1,5 @@
+use super::waiter::{Token, Waiter};
 use super::{now, WAITS, WAITS_NUM};
-use async_ach_waker::{WakerEntity, WakerPool, WakerToken};
 use core::future::Future;
 use core::pin::Pin;
 use core::task::{Context, Poll};
@@ -22,9 +22,9 @@ pub fn sleep_until(deadline: u64) -> Sleep {
 }
 
 pub struct Sleep {
-    pool: &'static WakerPool<u64, WAITS_NUM>,
+    pool: &'static Waiter<WAITS_NUM>,
     deadline: u64,
-    token: Option<WakerToken<'static, u64, WAITS_NUM>>,
+    token: Option<Token<'static, WAITS_NUM>>,
 }
 impl Future for Sleep {
     type Output = ();
@@ -35,9 +35,9 @@ impl Future for Sleep {
         }
         let waker = cx.waker();
         if let Some(token) = &self.token {
-            token.swap(WakerEntity::new(waker.clone(), deadline));
+            token.swap(waker.clone(), deadline);
         } else if let Ok(token) = self.pool.register() {
-            token.swap(WakerEntity::new(waker.clone(), deadline));
+            token.swap(waker.clone(), deadline);
             self.token = Some(token);
         } else {
             waker.wake_by_ref();

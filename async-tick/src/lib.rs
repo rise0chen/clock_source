@@ -4,15 +4,17 @@
 mod interval;
 mod sleep;
 mod timeout;
+mod waiter;
 
-use async_ach_waker::WakerPool;
 use core::time::Duration;
+use core::u64::MAX;
 pub use interval::*;
 pub use sleep::*;
 pub use timeout::*;
+use waiter::Waiter;
 
 const WAITS_NUM: usize = 64;
-static WAITS: WakerPool<u64, WAITS_NUM> = WakerPool::new();
+static WAITS: Waiter<WAITS_NUM> = Waiter::new();
 
 /// Nanosecond since `app start time` or `os start time`
 pub fn now() -> u64 {
@@ -26,14 +28,25 @@ impl Tick {
     /// returns nanosecond
     pub fn tick(&mut self, interval: Duration) -> u64 {
         let now = self.tick.tick(interval);
+        if let Some(next) = WAITS.take_next() {
+            if now < next {
+                WAITS.set_next(next);
+                return now;
+            }
+        } else {
+            return now;
+        }
+        let mut min = MAX;
         WAITS.retain(|entity| {
             if entity.val <= now {
                 entity.waker.wake_by_ref();
                 false
             } else {
+                min = min.min(entity.val);
                 true
             }
         });
+        WAITS.set_next(min);
         now
     }
 }
