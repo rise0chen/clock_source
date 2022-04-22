@@ -6,7 +6,7 @@ license-file = "LICENSE"
 name = "tick_clock"
 readme = "./README.md"
 repository = "https://github.com/rise0chen/clock_source.git"
-version = "0.1.1"
+version = "0.1.2"
 
 [dependencies]
 clock_source = {version = "0.2", features = ["custom"], path = "../clock_source"}
