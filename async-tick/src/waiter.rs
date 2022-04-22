@@ -1,6 +1,6 @@
 use async_ach_waker::{WakerEntity, WakerPool, WakerToken};
+use atomic_polyfill::{AtomicU64, Ordering::SeqCst};
 use core::ops::Deref;
-use core::sync::atomic::{AtomicU64, Ordering::SeqCst};
 use core::task::Waker;
 use core::u64::MAX;
 
