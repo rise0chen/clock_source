@@ -1,7 +1,7 @@
 use core::time::Duration;
 use std::thread;
 
-#[cfg(feature = "std")]
+#[cfg(not(target_os = "none"))]
 #[test]
 fn base() {
     let last = clock_source::now();
@@ -13,7 +13,7 @@ fn base() {
     assert!(now - last > Duration::from_millis(100).as_nanos() as u64)
 }
 
-#[cfg(not(feature = "std"))]
+#[cfg(feature = "custom")]
 #[test]
 fn set() {
     static SOURCE: fn() -> u64 = || 1;

@@ -6,13 +6,14 @@ license-file = "LICENSE"
 name = "clock_source"
 readme = "./README.md"
 repository = "https://github.com/rise0chen/clock_source.git"
-version = "0.2.3"
+version = "0.2.4"
 
 [features]
 custom = []
-default = ["std"]
-std = []
+default = []
 
 [dependencies]
 cfg-if = "1.0"
+
+[target.'cfg(not(target_os = "none"))'.dependencies]
 time-clock = {version = "0.1", path = "../time_clock"}

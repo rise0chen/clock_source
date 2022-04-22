@@ -1,7 +1,7 @@
 #![no_std]
 
 cfg_if::cfg_if! {
-    if #[cfg(any(feature = "custom", not(feature = "std")))] {
+    if #[cfg(feature = "custom")] {
         mod custom;
         use custom::CLOCK;
     } else {
