@@ -6,7 +6,7 @@ license-file = "LICENSE"
 name = "async-tick"
 readme = "./README.md"
 repository = "https://github.com/rise0chen/clock_source.git"
-version = "0.1.7"
+version = "0.1.8"
 
 [features]
 default = ["std"]
@@ -14,8 +14,8 @@ std = []
 
 [dependencies]
 ach-lazy = "0.1"
-async_ach-waker = "0.1"
-atomic-polyfill = "0.1"
+async_ach-waker = "0.2"
+atomic-polyfill = "1.0"
 futures-util = {version = "0.3", default-features = false}
 tick_clock = {version = "0.1", path = "../tick_clock"}
 

@@ -1,4 +1,5 @@
-use async_ach_waker::{WakerEntity, WakerPool, WakerToken};
+use async_ach_waker::pool::{WakerPool, WakerToken};
+use async_ach_waker::WakerEntity;
 use atomic_polyfill::{AtomicU64, Ordering::SeqCst};
 use core::ops::Deref;
 use core::task::Waker;

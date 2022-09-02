@@ -38,11 +38,11 @@ impl Tick {
         }
         let mut min = MAX;
         WAITS.retain(|entity| {
-            if entity.val <= now {
-                entity.waker.wake_by_ref();
+            if **entity <= now {
+                entity.wake();
                 false
             } else {
-                min = min.min(entity.val);
+                min = min.min(**entity);
                 true
             }
         });
